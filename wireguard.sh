@@ -91,6 +91,7 @@ install() {
 	sudo dpkg -i "$package"
 	sudo modprobe wireguard
 
+	mkdir -p $WIREGUARD_DIR
 	echo "$name" >$WIREGUARD_DIR/installed
 
 	reload_config
