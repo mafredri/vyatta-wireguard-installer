@@ -92,6 +92,7 @@ install() {
 	sudo modprobe wireguard
 
 	mkdir -p $WIREGUARD_DIR
+	chmod g+w $WIREGUARD_DIR
 	echo "$name" >$WIREGUARD_DIR/installed
 
 	reload_config
@@ -143,12 +144,14 @@ upgrade() {
 		sudo modprobe wireguard
 	fi
 
+	mkdir -p $WIREGUARD_DIR
+	chmod g+w $WIREGUARD_DIR
 	echo "$name" >$WIREGUARD_DIR/installed
 
 	if ((update_cache)); then
 		# Ensure cache directory exists.
-		mkdir -p $WIREGUARD_DIR $CACHE_DIR
-		chmod g+w $WIREGUARD_DIR $CACHE_DIR
+		mkdir -p $CACHE_DIR
+		chmod g+w $CACHE_DIR
 
 		echo "Purging previous cache..."
 		rm -fv $CACHE_DIR/*.deb
