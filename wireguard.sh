@@ -49,7 +49,7 @@ latest_release_for() {
 }
 
 disable_wireguard() {
-	local interfaces
+	local -a interfaces
 	interfaces=("$(wg show interfaces)")
 
 	config begin
