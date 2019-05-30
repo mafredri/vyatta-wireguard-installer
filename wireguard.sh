@@ -3,7 +3,9 @@ set -e
 
 declare -A SUPPORTED_BOARDS
 SUPPORTED_BOARDS=(
-	[e102]=e100 # ERLite-3 (EdgeRouter Lite 3-Port), ERPoe-5 (EdgeRouter PoE 5-Port)
+	[e50]=e50 # ER-X (EdgeRouter X)
+	[e101]=e100 # ERLite-3 (EdgeRouter Lite 3-Port)
+	[e102]=e100 # ERPoe-5 (EdgeRouter PoE 5-Port)
 	[e200]=e200 # EdgeRouter Pro 8-Port
 	[e201]=e200 # EdgeRouter 8-Port
 	[e300]=e300 # ER-4 (EdgeRouter 4)
