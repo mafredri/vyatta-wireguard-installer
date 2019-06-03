@@ -4,7 +4,7 @@ set -e
 declare -A SUPPORTED_BOARDS
 SUPPORTED_BOARDS=(
 	[e50]=e50 # ER-X (EdgeRouter X)
-	[e51]=e50 # Edgerouter X SFP
+	[e51]=e50 # ER-X-SFP (Edgerouter X SFP)
 	[e101]=e100 # ERLite-3 (EdgeRouter Lite 3-Port)
 	[e102]=e100 # ERPoe-5 (EdgeRouter PoE 5-Port)
 	[e200]=e200 # EdgeRouter Pro 8-Port
@@ -242,6 +242,18 @@ BOARD=${SUPPORTED_BOARDS[$BOARD_ID]}
 if [[ -z $BOARD ]]; then
 	echo "Unsupported board ${BOARD_ID}, aborting."
 	exit 1
+fi
+
+
+KERNEL=$(uname -r)
+if ! [[ $BOARD =~ ^ugw ]]; then
+	# For EdgeRouters, we must check if they are using the v2.0+ firmware,
+	# in which case we use a different package with compatible kernel
+	# modules. We simply assume that kernel version 4.0.0+ means we are
+	# running on v2.0 firmware.
+	if dpkg --compare-versions "$KERNEL" gt "4.0.0"; then
+		BOARD=v2.0-$BOARD
+	fi
 fi
 
 case $1 in
