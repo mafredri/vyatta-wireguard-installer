@@ -214,20 +214,23 @@ run_remove() {
 
 run_update_script() {
 	tmpdir=$(mktemp -d)
-	cat <<-EOS >"$tmpdir"/update-wireguard-script.sh
+	cat <<-EOS >"$tmpdir"/wireguard-script-self-update.sh
 		#!/bin/bash
 		set -e
 
+		OLD_SCRIPT="${BASH_SOURCE[0]}"
+		NEW_SCRIPT="$tmpdir"/wireguard-latest.sh
+
 		echo "Downloading script..."
-		curl -sSL https://github.com/mafredri/vyatta-wireguard-installer/raw/master/wireguard.sh -o "$tmpdir"/wireguard.sh
+		curl -sSL https://github.com/mafredri/vyatta-wireguard-installer/raw/master/wireguard.sh -o \$NEW_SCRIPT
 
 		echo "Checking for changes..."
 		echo
-		if ! diff -u "${BASH_SOURCE[0]}" "$tmpdir"/wireguard.sh; then
+		if ! diff -u "\$OLD_SCRIPT" "\$NEW_SCRIPT"; then
 			echo
 			read -p "Use updated script (Y/n)? " update
 			if [[ -z \$update ]] || [[ \$update =~ [yY] ]]; then
-				#cat "$tmpdir"/wireguard.sh >"${BASH_SOURCE[0]}"
+				cat "\$NEW_SCRIPT" >"\$OLD_SCRIPT"
 				echo "Script updated!"
 			else
 				echo "Aborting update..."
@@ -239,8 +242,8 @@ run_update_script() {
 		exit 0
 	EOS
 
-	chmod +x "$tmpdir"/update-wireguard-script.sh
-	exec "$tmpdir"/update-wireguard-script.sh
+	chmod +x "$tmpdir"/wireguard-script-self-update.sh
+	exec "$tmpdir"/wireguard-script-self-update.sh
 }
 
 usage() {
