@@ -212,7 +212,7 @@ run_remove() {
 	echo "WireGuard removed!"
 }
 
-run_update_script() {
+run_self_update() {
 	tmpdir=$(mktemp -d)
 	cat <<-EOS >"$tmpdir"/wireguard-script-self-update.sh
 		#!/bin/bash
@@ -304,8 +304,8 @@ case $1 in
 	remove)
 		run_remove "$@"
 		;;
-	update-script)
-		run_update_script "$@"
+	self-update)
+		run_self_update "$@"
 		;;
 	*)
 		# Perform install if we're running as part of post-config.d and
