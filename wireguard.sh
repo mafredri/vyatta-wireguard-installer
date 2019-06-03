@@ -212,6 +212,37 @@ run_remove() {
 	echo "WireGuard removed!"
 }
 
+run_update_script() {
+	tmpdir=$(mktemp -d)
+	cat <<-EOS >"$tmpdir"/update-wireguard-script.sh
+		#!/bin/bash
+		set -e
+
+		echo "Downloading script..."
+		curl -sSL https://github.com/mafredri/vyatta-wireguard-installer/raw/master/wireguard.sh -o "$tmpdir"/wireguard.sh
+
+		echo "Checking for changes..."
+		echo
+		if ! diff -u "${BASH_SOURCE[0]}" "$tmpdir"/wireguard.sh; then
+			echo
+			read -p "Use updated script (Y/n)? " update
+			if [[ -z \$update ]] || [[ \$update =~ [yY] ]]; then
+				#cat "$tmpdir"/wireguard.sh >"${BASH_SOURCE[0]}"
+				echo "Script updated!"
+			else
+				echo "Aborting update..."
+			fi
+		else
+			echo "Script is already up to date, nothing to do."
+		fi
+		rm -rfv "${tmpdir}"
+		exit 0
+	EOS
+
+	chmod +x "$tmpdir"/update-wireguard-script.sh
+	exec "$tmpdir"/update-wireguard-script.sh
+}
+
 usage() {
 	cat <<EOU 1>&2
 Install, upgrade or remove WireGuard (github.com/Lochnair/vyatta-wireguard) on
@@ -225,10 +256,11 @@ Usage:
   $0 [COMMAND] [OPTION]...
 
 Commands:
-  install  Install the latest version of WireGuard
-  upgrade  Upgrade WireGuard to the latest version
-  remove   Remove WireGuard
-  help     Show this help
+  install      Install the latest version of WireGuard
+  upgrade      Upgrade WireGuard to the latest version
+  remove       Remove WireGuard
+  self-update  Fetch the latest version of this script
+  help         Show this help
 
 Options:
       --no-cache  Disable package caching, cache is used during (re)install
@@ -268,6 +300,9 @@ case $1 in
 		;;
 	remove)
 		run_remove "$@"
+		;;
+	update-script)
+		run_update_script "$@"
 		;;
 	*)
 		# Perform install if we're running as part of post-config.d and

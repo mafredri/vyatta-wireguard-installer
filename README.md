@@ -28,10 +28,11 @@ Usage:
   ./wireguard.sh [COMMAND] [OPTION]...
 
 Commands:
-  install  Install the latest version of WireGuard
-  upgrade  Upgrade WireGuard to the latest version
-  remove   Remove WireGuard
-  help     Show this help
+  install      Install the latest version of WireGuard
+  upgrade      Upgrade WireGuard to the latest version
+  remove       Remove WireGuard
+  self-update  Fetch the latest version of this script
+  help         Show this help
 
 Options:
       --no-cache  Disable package cache for this run, cache is used during (re)install
