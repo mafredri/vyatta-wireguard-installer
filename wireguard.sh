@@ -53,7 +53,7 @@ latest_release_for() {
 
 disable_wireguard() {
 	local -a interfaces
-	interfaces=("$(wg show interfaces)")
+	IFS=" " read -r -a interfaces <<<"$(wg show interfaces)"
 
 	config begin
 	# Disable routing on all interfaces so that we can delete the
@@ -278,7 +278,6 @@ if [[ -z $BOARD ]]; then
 	echo "Unsupported board ${BOARD_ID}, aborting."
 	exit 1
 fi
-
 
 KERNEL=$(uname -r)
 if ! [[ $BOARD =~ ^ugw ]]; then
