@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+# The repository from which we fetch new releases.
+WIREGUARD_REPO=FossoresLP/vyatta-wireguard
+
+# Original repo, no longer actively pushing releases, for more information, see:
+# https://github.com/Lochnair/vyatta-wireguard/issues/140#issuecomment-587031573
+# WIREGUARD_REPO=Lochnair/vyatta-wireguard
+
 declare -A SUPPORTED_BOARDS
 SUPPORTED_BOARDS=(
 	[e50]=e50 # ER-X (EdgeRouter X)
@@ -47,7 +54,7 @@ latest_release_for() {
 	# From the GitHub API documentation:
 	# > The created_at attribute is the date of the commit used for the
 	# > release, and not the date when the release was drafted or published.
-	curl -sSL https://api.github.com/repos/Lochnair/vyatta-wireguard/releases \
+	curl -sSL https://api.github.com/repos/${WIREGUARD_REPO}/releases \
 		| jq -r --arg version "wireguard-${board}" \
 			'sort_by(.created_at) | reverse | .[0].assets | map(select(.name | contains($version))) | .[0] | {name: .name, url: .browser_download_url}'
 }
@@ -249,7 +256,7 @@ run_self_update() {
 
 usage() {
 	cat <<EOU 1>&2
-Install, upgrade or remove WireGuard (github.com/Lochnair/vyatta-wireguard) on
+Install, upgrade or remove WireGuard (github.com/${WIREGUARD_REPO}) on
 Ubiquiti hardware. By default, the installer caches the deb-package so that the
 same version of WireGuard can be restored after a firmware upgrade.
 
