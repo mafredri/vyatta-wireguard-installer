@@ -19,6 +19,7 @@ SUPPORTED_BOARDS=(
 
 WIREGUARD_DIR=/config/user-data/wireguard
 CACHE_DIR=$WIREGUARD_DIR/cache
+LATEST_FILE=$CACHE_DIR/latest
 
 config() {
 	/opt/vyatta/sbin/vyatta-cfg-cmd-wrapper "$@"
@@ -82,12 +83,12 @@ reload_config() {
 install() {
 	local name package
 
-	if [[ $* =~ --no-cache ]] || ! [[ -f $CACHE_DIR/latest ]]; then
+	if [[ $* =~ --no-cache ]] || ! [[ -f $LATEST_FILE ]]; then
 		upgrade "$@"
 		return $?
 	fi
 
-	name=$(<$CACHE_DIR/latest)
+	name=$(<$LATEST_FILE)
 	package=$CACHE_DIR/$name
 
 	echo "Installing ${name}..."
@@ -121,7 +122,7 @@ upgrade() {
 
 	if [[ $version == $(current_version) ]]; then
 		# Avoid exiting if the cache is missing and we should update it.
-		if ((update_cache)) && ! [[ -f $CACHE_DIR/latest ]]; then
+		if ((update_cache)) && ! [[ -f $LATEST_FILE ]]; then
 			echo "WireGuard is already up to date ($(current_version)) but the cache is missing, continuing."
 			skip_install=1
 		else
@@ -161,7 +162,7 @@ upgrade() {
 		echo "Caching installer to ${CACHE_DIR}..."
 		cp -v "$package" $CACHE_DIR/"$name"
 
-		echo "$name" >$CACHE_DIR/latest
+		echo "$name" >$LATEST_FILE
 	fi
 
 	rm -f "$package"
@@ -287,6 +288,7 @@ if ! [[ $BOARD =~ ^ugw ]]; then
 	# running on v2.0 firmware.
 	if dpkg --compare-versions "$KERNEL" gt "4.0.0"; then
 		BOARD=v2.0-$BOARD
+		LATEST_FILE=${LATEST_FILE}-v2.0
 	fi
 fi
 
