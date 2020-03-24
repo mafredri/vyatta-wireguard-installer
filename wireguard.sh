@@ -8,6 +8,8 @@ WIREGUARD_REPO=FossoresLP/vyatta-wireguard
 # https://github.com/Lochnair/vyatta-wireguard/issues/140#issuecomment-587031573
 # WIREGUARD_REPO=Lochnair/vyatta-wireguard
 
+WIREGUARD_INSTALLER_VERSION=1.0.0
+
 declare -A SUPPORTED_BOARDS
 SUPPORTED_BOARDS=(
 	[e50]=e50 # ER-X (EdgeRouter X)
@@ -302,6 +304,10 @@ fi
 case $1 in
 	-h | --help | help)
 		usage
+		;;
+	--version)
+		echo "vyatta-wireguard-installer v${WIREGUARD_INSTALLER_VERSION}"
+		exit 0
 		;;
 	install)
 		run_install "$@"
