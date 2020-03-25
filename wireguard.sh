@@ -274,6 +274,7 @@ Commands:
   remove       Remove WireGuard
   self-update  Fetch the latest version of this script
   help         Show this help
+  version      Show the version of this tool
 
 Options:
       --no-cache  Disable package caching, cache is used during (re)install
@@ -305,7 +306,7 @@ case $1 in
 	-h | --help | help)
 		usage
 		;;
-	--version)
+	--version | version)
 		echo "vyatta-wireguard-installer v${WIREGUARD_INSTALLER_VERSION}"
 		exit 0
 		;;
