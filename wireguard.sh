@@ -181,6 +181,31 @@ upgrade() {
 	fi
 }
 
+run_check() {
+	local asset_data name url version
+
+	asset_data=$(latest_release_for "$BOARD")
+	name=$(jq -r .name <<<"$asset_data")
+	url=$(jq -r .url <<<"$asset_data")
+
+	# Use simple version parsing based on name so that we
+	# can avoid downloading the deb for the version check.
+	version=${name#wireguard-${BOARD}-}
+	version=${version%.deb}
+
+	if is_installed; then
+		if [[ $version == $(current_version) ]]; then
+			echo "WireGuard is up to date ($(current_version))."
+		else
+			echo "There is a new WireGuard version available!"
+			echo "New version:       ${version}"
+			echo "Installed version: $(current_version)"
+		fi
+	else
+		echo "Latest version of WireGuard: ${version}"
+	fi
+}
+
 run_install() {
 	if is_installed; then
 		echo "WireGuard is already installed ($(current_version)), nothing to do."
@@ -269,6 +294,7 @@ Usage:
   $0 [COMMAND] [OPTION]...
 
 Commands:
+  check        Check if there's a new version of WireGuard (without installing)
   install      Install the latest version of WireGuard
   upgrade      Upgrade WireGuard to the latest version
   remove       Remove WireGuard
@@ -309,6 +335,9 @@ case $1 in
 	--version | version)
 		echo "vyatta-wireguard-installer v${WIREGUARD_INSTALLER_VERSION}"
 		exit 0
+		;;
+	check)
+		run_check "$@"
 		;;
 	install)
 		run_install "$@"
