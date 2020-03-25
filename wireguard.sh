@@ -8,7 +8,7 @@ WIREGUARD_REPO=FossoresLP/vyatta-wireguard
 # https://github.com/Lochnair/vyatta-wireguard/issues/140#issuecomment-587031573
 # WIREGUARD_REPO=Lochnair/vyatta-wireguard
 
-WIREGUARD_INSTALLER_VERSION=1.0.0
+WIREGUARD_INSTALLER_VERSION=1.0.1
 
 declare -A SUPPORTED_BOARDS
 SUPPORTED_BOARDS=(
