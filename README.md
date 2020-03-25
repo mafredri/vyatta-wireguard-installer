@@ -17,7 +17,7 @@ chmod +x /config/scripts/post-config.d/wireguard.sh
 
 ```console
 $ ./wireguard.sh help
-Install, upgrade or remove WireGuard (github.com/Lochnair/vyatta-wireguard) on
+Install, upgrade or remove WireGuard (github.com/FossoresLP/vyatta-wireguard) on
 Ubiquiti hardware. By default, the installer caches the deb-package so that the
 same version of WireGuard can be restored after a firmware upgrade.
 
@@ -25,17 +25,19 @@ Note: This script can be placed in /config/scripts/post-config.d for automatic
 installation after firmware upgrades.
 
 Usage:
-  ./wireguard.sh [COMMAND] [OPTION]...
+  $0 [COMMAND] [OPTION]...
 
 Commands:
+  check        Check if there's a new version of WireGuard (without installing)
   install      Install the latest version of WireGuard
   upgrade      Upgrade WireGuard to the latest version
   remove       Remove WireGuard
   self-update  Fetch the latest version of this script
   help         Show this help
+  version      Show the version of this tool
 
 Options:
-      --no-cache  Disable package cache for this run, cache is used during (re)install
+      --no-cache  Disable package caching, cache is used during (re)install
 ```
 
 ## Todo
