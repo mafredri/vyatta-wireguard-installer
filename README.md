@@ -2,6 +2,8 @@
 
 Install, upgrade or remove WireGuard ([Lochnair/vyatta-wireguard](https://github.com/Lochnair/vyatta-wireguard)) on Ubiquiti hardware. By default, the installer caches the deb-package so that the same version of WireGuard can be restored after a firmware upgrade.
 
+**NOTE:** The WireGuard repo has recently been updated to [FossoresLP/vyatta-wireguard](https://github.com/FossoresLP/vyatta-wireguard) as the original (Lochnair/vyatta-wireguard) is no longer actively pushing updates. See [this comment](https://github.com/Lochnair/vyatta-wireguard/issues/140#issuecomment-587031573) for more info.
+
 ## Installation
 
 Simply copy the script onto your Ubiquiti router and run it.
