@@ -20,6 +20,7 @@ SUPPORTED_BOARDS=(
 	[e201]=e200 # EdgeRouter 8-Port
 	[e300]=e300 # ER-4 (EdgeRouter 4)
 	[e301]=e300 # ER-6P (EdgeRouter 6P)
+	[e302]=e300 # ER-12 (EdgeRouter 12/12P)
 	[e1000]=e1000 # USG-XG (EdgeRouter Infinity)
 	[e120]=ugw3 # UGW3 (UniFi-Gateway-3)
 	[e221]=ugw4 # UGW4 (UniFi-Gateway-4)
