@@ -1,14 +1,14 @@
 #!/bin/bash
 set -e
 
-# The repository from which we fetch new releases.
-WIREGUARD_REPO=FossoresLP/vyatta-wireguard
+# The official repository from which we fetch new releases.
+WIREGUARD_REPO=WireGuard/wireguard-vyatta-ubnt
 
 # Original repo, no longer actively pushing releases, for more information, see:
 # https://github.com/Lochnair/vyatta-wireguard/issues/140#issuecomment-587031573
 # WIREGUARD_REPO=Lochnair/vyatta-wireguard
 
-WIREGUARD_INSTALLER_VERSION=1.1.0
+WIREGUARD_INSTALLER_VERSION=1.2.0
 
 declare -A SUPPORTED_BOARDS
 SUPPORTED_BOARDS=(
@@ -58,7 +58,7 @@ latest_release_for() {
 	# > The created_at attribute is the date of the commit used for the
 	# > release, and not the date when the release was drafted or published.
 	curl -sSL https://api.github.com/repos/${WIREGUARD_REPO}/releases \
-		| jq -r --arg version "wireguard-${board}" \
+		| jq -r --arg version "${board}" \
 			'sort_by(.created_at) | reverse | .[0].assets | map(select(.name | contains($version))) | .[0] | {name: .name, url: .browser_download_url}'
 }
 
