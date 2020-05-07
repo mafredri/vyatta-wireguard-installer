@@ -315,10 +315,9 @@ if ! [[ $BOARD =~ ^ugw ]]; then
 	# running on v2.0 firmware.
 	if dpkg --compare-versions "$KERNEL" gt "4.0.0"; then
 		BOARD=$BOARD-v2
-		LATEST_FILE=${LATEST_FILE}-v2
+		LATEST_FILE=${LATEST_FILE}-v2.0
 	else
 		BOARD=$BOARD-v1
-		LATEST_FILE=${LATEST_FILE}-v1
 	fi
 fi
 
