@@ -40,6 +40,48 @@ Options:
       --no-cache  Disable package caching, cache is used during (re)install
 ```
 
+## Automatic upgrade
+
+The script in this repo can be used to perform automatic upgrades via the VyOS task scheduler. See [VyOS Wiki: Task scheduler](https://wiki.vyos.net/wiki/Task_scheduler) for more configuration options.
+
+**WARNING:** There is no rollback functionality implemented (yet). If something goes wrong during the auto upgrade you could be left with a non-functioning WireGuard install.
+
+### On device configuration
+
+This configuration method can be used on any Ubiquti device, but will not persist across provisions on the USG.
+
+```
+configure
+set system task-scheduler task wireguard_auto_upgrade executable path /config/scripts/post-config.d/wireguard.sh
+set system task-scheduler task wireguard_auto_upgrade executable arguments upgrade
+set system task-scheduler task wireguard_auto_upgrade interval 14d
+commit
+save
+exit
+```
+
+### Ubiquiti Security Gateway
+
+Update your `config.gateway.json` to include the following:
+
+```
+{
+	"system": {
+		"task-scheduler": {
+			"task": {
+				"wireguard_auto_upgrade": {
+					"executable": {
+						"path": "/config/scripts/post-config.d/wireguard.sh",
+						"arguments": "upgrade"
+					},
+					"interval": "14d"
+				}
+			}
+		}
+	}
+}
+```
+
 ## Todo
 
 - Investigate using `/config/scripts/pre-config.d` for post-firmware upgrade installation
@@ -52,4 +94,5 @@ Options:
 ## Resources
 
 - [VyOS Wiki: Configuration management](https://wiki.vyos.net/wiki/Configuration_management)
+- [VyOS Wiki: Task scheduler](https://wiki.vyos.net/wiki/Task_scheduler)
 - [Lochnair/vyatta-wireguard#62: feature request: make wireguard sustain firmware updates](https://github.com/Lochnair/vyatta-wireguard/issues/62)
