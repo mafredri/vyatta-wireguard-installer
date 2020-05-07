@@ -4,7 +4,7 @@ set -e
 # The repository from which we fetch new releases.
 WIREGUARD_REPO=WireGuard/wireguard-vyatta-ubnt
 
-WIREGUARD_INSTALLER_VERSION=1.1.0
+WIREGUARD_INSTALLER_VERSION=1.2.0
 
 declare -A SUPPORTED_BOARDS
 SUPPORTED_BOARDS=(
@@ -57,7 +57,7 @@ latest_release_for() {
 		| jq -r --arg version "${board}" \
 			'sort_by(.created_at) | reverse | .[0] | .tag_name as $tag_name
 			| .assets | map(select(.name | contains($version)))
-			| {name: .[0].name, url: .[0].browser_download_url, tag: $tag_name}' 
+			| {name: .[0].name, url: .[0].browser_download_url, tag: $tag_name}'
 }
 
 disable_wireguard() {
