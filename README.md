@@ -40,13 +40,15 @@ Options:
       --no-cache  Disable package caching, cache is used during (re)install
 ```
 
-## Automatic upgrade
+## Configuration
+
+### Automatic upgrade
 
 The script in this repo can be used to perform automatic upgrades via the VyOS task scheduler. See [VyOS Wiki: Task scheduler](https://wiki.vyos.net/wiki/Task_scheduler) for more configuration options.
 
 **WARNING:** There is no rollback functionality implemented (yet). If something goes wrong during the auto upgrade you could be left with a non-functioning WireGuard install.
 
-### On device configuration
+#### On device configuration
 
 This configuration method can be used on any Ubiquti device, but will not persist across provisions on the USG.
 
@@ -60,7 +62,7 @@ save
 exit
 ```
 
-### Ubiquiti Security Gateway
+#### Ubiquiti Security Gateway
 
 Update your `config.gateway.json` to include the following:
 
