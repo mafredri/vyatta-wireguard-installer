@@ -52,7 +52,7 @@ The script in this repo can be used to perform automatic upgrades via the VyOS t
 
 This configuration method can be used on any Ubiquti device, but will not persist across provisions on the USG.
 
-```
+```console
 configure
 set system task-scheduler task wireguard_auto_upgrade executable path /config/scripts/post-config.d/wireguard.sh
 set system task-scheduler task wireguard_auto_upgrade executable arguments upgrade
@@ -66,7 +66,7 @@ exit
 
 Update your `config.gateway.json` to include the following:
 
-```
+```json
 {
 	"system": {
 		"task-scheduler": {
