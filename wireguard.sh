@@ -2,11 +2,7 @@
 set -e
 
 # The repository from which we fetch new releases.
-WIREGUARD_REPO=FossoresLP/vyatta-wireguard
-
-# Original repo, no longer actively pushing releases, for more information, see:
-# https://github.com/Lochnair/vyatta-wireguard/issues/140#issuecomment-587031573
-# WIREGUARD_REPO=Lochnair/vyatta-wireguard
+WIREGUARD_REPO=WireGuard/wireguard-vyatta-ubnt
 
 WIREGUARD_INSTALLER_VERSION=1.1.0
 
@@ -58,8 +54,10 @@ latest_release_for() {
 	# > The created_at attribute is the date of the commit used for the
 	# > release, and not the date when the release was drafted or published.
 	curl -sSL https://api.github.com/repos/${WIREGUARD_REPO}/releases \
-		| jq -r --arg version "wireguard-${board}" \
-			'sort_by(.created_at) | reverse | .[0].assets | map(select(.name | contains($version))) | .[0] | {name: .name, url: .browser_download_url}'
+		| jq -r --arg version "${board}" \
+			'sort_by(.created_at) | reverse | .[0] | .tag_name as $tag_name
+			| .assets | map(select(.name | contains($version)))
+			| {name: .[0].name, url: .[0].browser_download_url, tag: $tag_name}' 
 }
 
 disable_wireguard() {
@@ -123,12 +121,8 @@ upgrade() {
 	asset_data=$(latest_release_for "$BOARD")
 	name=$(jq -r .name <<<"$asset_data")
 	url=$(jq -r .url <<<"$asset_data")
+	version=$(jq -r .tag <<<"$asset_data")
 	package=/tmp/$name
-
-	# Use simple version parsing based on name so that we
-	# can avoid downloading the deb for the version check.
-	version=${name#wireguard-${BOARD}-}
-	version=${version%.deb}
 
 	if [[ $version == $(current_version) ]]; then
 		# Avoid exiting if the cache is missing and we should update it.
@@ -188,11 +182,7 @@ run_check() {
 	asset_data=$(latest_release_for "$BOARD")
 	name=$(jq -r .name <<<"$asset_data")
 	url=$(jq -r .url <<<"$asset_data")
-
-	# Use simple version parsing based on name so that we
-	# can avoid downloading the deb for the version check.
-	version=${name#wireguard-${BOARD}-}
-	version=${version%.deb}
+	version=$(jq -r .tag <<<"$asset_data")
 
 	if is_installed; then
 		if [[ $version == $(current_version) ]]; then
@@ -324,8 +314,10 @@ if ! [[ $BOARD =~ ^ugw ]]; then
 	# modules. We simply assume that kernel version 4.0.0+ means we are
 	# running on v2.0 firmware.
 	if dpkg --compare-versions "$KERNEL" gt "4.0.0"; then
-		BOARD=v2.0-$BOARD
+		BOARD=$BOARD-v2
 		LATEST_FILE=${LATEST_FILE}-v2.0
+	else
+		BOARD=$BOARD-v1
 	fi
 fi
 
