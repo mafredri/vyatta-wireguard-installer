@@ -55,8 +55,8 @@ latest_release_for() {
 	# > release, and not the date when the release was drafted or published.
 	curl -sSL https://api.github.com/repos/${WIREGUARD_REPO}/releases \
 		| jq -r --arg version "${board}" \
-			'sort_by(.created_at) | reverse | .[0] | .tag_name as $tag_name \
-			| .assets | map(select(.name | contains($version))) \
+			'sort_by(.created_at) | reverse | .[0] | .tag_name as $tag_name
+			| .assets | map(select(.name | contains($version)))
 			| {name: .[0].name, url: .[0].browser_download_url, tag: $tag_name}' 
 }
 
