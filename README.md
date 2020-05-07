@@ -1,8 +1,6 @@
 # vyatta-wireguard-installer
 
-Install, upgrade or remove WireGuard ([Lochnair/vyatta-wireguard](https://github.com/Lochnair/vyatta-wireguard)) on Ubiquiti hardware. By default, the installer caches the deb-package so that the same version of WireGuard can be restored after a firmware upgrade.
-
-**NOTE:** The WireGuard repo has recently been updated to [FossoresLP/vyatta-wireguard](https://github.com/FossoresLP/vyatta-wireguard) as the original (Lochnair/vyatta-wireguard) is no longer actively pushing updates. See [this comment](https://github.com/Lochnair/vyatta-wireguard/issues/140#issuecomment-587031573) for more info.
+Install, upgrade or remove WireGuard ([WireGuard/wireguard-vyatta-ubnt](https://github.com/WireGuard/wireguard-vyatta-ubnt)) on Ubiquiti hardware. By default, the installer caches the deb-package so that the same version of WireGuard can be restored after a firmware upgrade.
 
 ## Installation
 
@@ -19,7 +17,7 @@ chmod +x /config/scripts/post-config.d/wireguard.sh
 
 ```console
 $ ./wireguard.sh help
-Install, upgrade or remove WireGuard (github.com/FossoresLP/vyatta-wireguard) on
+Install, upgrade or remove WireGuard (github.com/WireGuard/wireguard-vyatta-ubnt) on
 Ubiquiti hardware. By default, the installer caches the deb-package so that the
 same version of WireGuard can be restored after a firmware upgrade.
 
@@ -27,7 +25,7 @@ Note: This script can be placed in /config/scripts/post-config.d for automatic
 installation after firmware upgrades.
 
 Usage:
-  $0 [COMMAND] [OPTION]...
+  ./wireguard.sh [COMMAND] [OPTION]...
 
 Commands:
   check        Check if there's a new version of WireGuard (without installing)
