@@ -71,19 +71,19 @@ Update your `config.gateway.json` to include the following:
 
 ```json
 {
-	"system": {
-		"task-scheduler": {
-			"task": {
-				"wireguard_auto_upgrade": {
-					"executable": {
-						"path": "/config/scripts/post-config.d/wireguard.sh",
-						"arguments": "upgrade"
-					},
-					"interval": "14d"
-				}
-			}
-		}
-	}
+  "system": {
+    "task-scheduler": {
+      "task": {
+        "wireguard_auto_upgrade": {
+          "executable": {
+            "path": "/config/scripts/post-config.d/wireguard.sh",
+            "arguments": "upgrade"
+          },
+          "interval": "14d"
+        }
+      }
+    }
+  }
 }
 ```
 
