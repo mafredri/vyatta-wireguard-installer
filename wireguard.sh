@@ -8,7 +8,7 @@ fi
 # The repository from which we fetch new releases.
 WIREGUARD_REPO=WireGuard/wireguard-vyatta-ubnt
 
-WIREGUARD_INSTALLER_VERSION=1.2.0
+WIREGUARD_INSTALLER_VERSION=1.3.0
 
 declare -A SUPPORTED_BOARDS
 SUPPORTED_BOARDS=(
