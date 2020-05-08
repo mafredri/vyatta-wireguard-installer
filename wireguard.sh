@@ -1,8 +1,9 @@
 #!/bin/bash
-if [ "$(id -g -n)" != 'vyattacfg' ] ; then
-    exec sg vyattacfg -c "/bin/bash $(readlink -f $0) $@"
-fi
 set -e
+
+if [[ $(id -g -n) != 'vyattacfg' ]]; then
+	exec sg vyattacfg -c "/bin/vbash $(readlink -f "$0") $*"
+fi
 
 # The repository from which we fetch new releases.
 WIREGUARD_REPO=WireGuard/wireguard-vyatta-ubnt
