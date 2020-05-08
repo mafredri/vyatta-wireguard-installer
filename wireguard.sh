@@ -65,6 +65,10 @@ latest_release_for() {
 }
 
 fix_permissions() {
+	# Ensure the vyattacfg user has permission to update the script.
+	sudo chgrp vyattacfg "$(readlink -f "$0")"
+	sudo chmod g+w "$(readlink -f "$0")"
+
 	if [[ -d $WIREGUARD_DIR ]]; then
 		sudo chmod g+w $WIREGUARD_DIR
 		sudo chgrp vyattacfg $WIREGUARD_DIR
