@@ -10,7 +10,7 @@ Simply copy the script onto your Ubiquiti router and run it.
 
 ```console
 curl -sSL https://github.com/mafredri/vyatta-wireguard-installer/raw/master/wireguard.sh -o /config/scripts/post-config.d/wireguard.sh
-sudo chmod +x /config/scripts/post-config.d/wireguard.sh
+chmod +x /config/scripts/post-config.d/wireguard.sh
 ```
 
 ## Usage
