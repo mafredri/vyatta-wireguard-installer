@@ -64,6 +64,23 @@ latest_release_for() {
 			| {name: .[0].name, url: .[0].browser_download_url, tag: $tag_name}'
 }
 
+fix_permissions() {
+	if [[ -d $WIREGUARD_DIR ]]; then
+		sudo chmod g+w $WIREGUARD_DIR
+		sudo chgrp vyattacfg $WIREGUARD_DIR
+
+		if [[ -f $WIREGUARD_DIR/installed ]]; then
+			sudo chgrp vyattacfg $WIREGUARD_DIR/installed
+			sudo chmod g+w $WIREGUARD_DIR/installed
+		fi
+
+		if [[ -d $WIREGUARD_DIR/cache ]]; then
+			sudo chgrp -R vyattacfg $WIREGUARD_DIR/cache
+			sudo chmod -R g+w $WIREGUARD_DIR/cache
+		fi
+	fi
+}
+
 disable_wireguard() {
 	local -a interfaces
 	IFS=" " read -r -a interfaces <<<"$(wg show interfaces)"
@@ -107,8 +124,7 @@ install() {
 	sudo dpkg -i "$package"
 	sudo modprobe wireguard
 
-	sudo mkdir -p $WIREGUARD_DIR
-	sudo chmod g+w $WIREGUARD_DIR
+	mkdir -p $WIREGUARD_DIR
 	echo "$name" >$WIREGUARD_DIR/installed
 
 	reload_config
@@ -156,14 +172,12 @@ upgrade() {
 		sudo modprobe wireguard
 	fi
 
-	sudo mkdir -p $WIREGUARD_DIR
-	sudo chmod g+w $WIREGUARD_DIR
+	mkdir -p $WIREGUARD_DIR
 	echo "$name" >$WIREGUARD_DIR/installed
 
 	if ((update_cache)); then
 		# Ensure cache directory exists.
-		sudo mkdir -p $CACHE_DIR
-		sudo chmod g+w $CACHE_DIR
+		mkdir -p $CACHE_DIR
 
 		echo "Purging previous cache..."
 		rm -fv $CACHE_DIR/*.deb
@@ -324,6 +338,9 @@ if ! [[ $BOARD =~ ^ugw ]]; then
 		BOARD=$BOARD-v1
 	fi
 fi
+
+# Ensure all permissions are sane for running as a non-root user.
+fix_permissions
 
 case $1 in
 	-h | --help | help)
