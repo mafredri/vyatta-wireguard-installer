@@ -14,6 +14,7 @@ declare -A SUPPORTED_BOARDS
 SUPPORTED_BOARDS=(
 	[e50]=e50 # ER-X (EdgeRouter X)
 	[e51]=e50 # ER-X-SFP (Edgerouter X SFP)
+	[e55]=e50 # ER-10X (EdgeRouter 10X)
 	[e101]=e100 # ERLite-3 (EdgeRouter Lite 3-Port)
 	[e102]=e100 # ERPoe-5 (EdgeRouter PoE 5-Port)
 	[e200]=e200 # EdgeRouter Pro 8-Port
