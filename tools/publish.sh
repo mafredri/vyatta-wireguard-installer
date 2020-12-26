@@ -44,7 +44,13 @@ run() {
 	git push --follow-tags
 
 	changes=(${(f)"$(git log --format='* %s %h' v${v}...v${nv}~1)"})
-	body=($changes '' https://github.com/${REPO}/compare/v${v}...v${nv})
+	body=(
+		'## Changes'
+		''
+		$changes
+		''
+		https://github.com/${REPO}/compare/v${v}...v${nv}
+	)
 
 	typeset -a params=(
 		tag=v${nv}
