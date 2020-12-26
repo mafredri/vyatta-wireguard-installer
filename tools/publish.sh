@@ -35,10 +35,10 @@ run() {
 
 	sed -i '' \
 		-e "s/# version: .*/# version: v${nv}/" \
-		-e "s/ASYNC_VERSION=.*/ASYNC_VERSION=${nv}/" \
-		async.zsh
+		-e "s/WIREGUARD_INSTALLER_VERSION=.*/WIREGUARD_INSTALLER_VERSION=${nv}/" \
+		wireguard.sh
 
-	git add async.zsh
+	git add wireguard.sh
 	git commit -m "v${nv}"
 	git tag "v${nv}" -m "Release v${nv}"
 	git push --follow-tags
