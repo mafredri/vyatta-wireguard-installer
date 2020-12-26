@@ -52,16 +52,18 @@ is_installed() {
 latest_release_for() {
 	local board=$1
 
-	# Fetch the latest release, sorted by created_at attribute since this is
-	# how GitHub operates for the /releases/latest end-point. We would use
-	# it, but it does not contain pre-releases.
+	# Fetch the latest release and filter out prereleases, sorted by
+	# created_at attribute since this is how GitHub operates for the
+	# /releases/latest end-point.
 	#
 	# From the GitHub API documentation:
 	# > The created_at attribute is the date of the commit used for the
 	# > release, and not the date when the release was drafted or published.
 	curl -sSL https://api.github.com/repos/${WIREGUARD_REPO}/releases \
-		| jq -r --arg version "${board}" \
-			'sort_by(.created_at) | reverse | .[0] | .tag_name as $tag_name
+		| jq -r \
+			--argjson prerelease false \
+			--arg version "${board}" \
+			'map(select(.prerelease == $prerelease)) | sort_by(.created_at) | reverse | .[0] | .tag_name as $tag_name
 			| .assets | map(select(.name | contains($version)))
 			| {name: .[0].name, url: .[0].browser_download_url, tag: $tag_name}'
 }
